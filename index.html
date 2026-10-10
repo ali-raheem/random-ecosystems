@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Random Ecosystems</title>
+  <meta name="description" content="Endless generated worlds of grass, grazers and hunters, with seasons, wildfires, population cycles and an evolutionary arms race. Works offline.">
+  <meta name="theme-color" content="#05080a">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Icon sprite: 24×24 line icons drawn in currentColor; use as <svg class="icon"><use href="#i-name"/></svg>. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5.5" width="3.5" height="13" rx="1" fill="currentColor"/><rect x="14" y="5.5" width="3.5" height="13" rx="1" fill="currentColor"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="M5.5 6v12l9-6z" fill="currentColor"/><path d="M18.5 6v12"/></symbol>
+    <symbol id="i-guide" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19l7-7"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h2M10 12h10M4 18h8M16 18h4"/><circle cx="16" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="14" cy="18" r="2"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="M3.5 9.5H7L11.5 5.5v13L7 14.5H3.5z"/><path d="M15 9a4 4 0 0 1 0 6"/><path d="M17.5 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+    <symbol id="i-sound-off" viewBox="0 0 24 24"><path d="M3.5 9.5H7L11.5 5.5v13L7 14.5H3.5z"/><path d="M15.5 9.5l5 5M20.5 9.5l-5 5"/></symbol>
+    <symbol id="i-hunt" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6.5"/><path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4"/></symbol>
+    <symbol id="i-fullscreen" viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></symbol>
+    <symbol id="i-hide" viewBox="0 0 24 24"><path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="2.5"/><path d="M4 4l16 16"/></symbol>
+    <symbol id="i-install" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19.5h14"/></symbol>
+  </svg>
+
+  <canvas id="view" aria-label="A generated landscape with grazers and hunters"></canvas>
+
+  <div id="hud">
+    <header id="cards">
+      <div class="card" id="card-world">
+        <div class="name"></div>
+        <div class="sub"><span class="season"></span><span class="weather"></span></div>
+        <div class="bar"><i></i></div>
+      </div>
+      <div class="card" id="card-pop">
+        <div class="name"><span class="g"></span> · <span class="h"></span></div>
+        <div class="sub"><span class="traits"></span><span class="hunts"></span></div>
+      </div>
+    </header>
+    <div id="meta"><span id="day-no"></span> · <span id="clock">00:00</span> · <button id="seed" title="Copy a link that replays this world"></button></div>
+    <ol id="feed" aria-live="polite"></ol>
+
+    <aside id="guide" class="panel" hidden aria-label="Field guide"></aside>
+    <aside id="settings" class="panel" hidden aria-label="Settings">
+      <h2>Settings</h2>
+      <button class="row" id="set-install" hidden><svg class="icon"><use href="#i-install"/></svg><span>Install app<small></small></span></button>
+      <button class="row" id="set-sound" role="switch"><svg class="icon"><use href="#i-sound"/></svg><span>Sound</span><i class="switch"></i></button>
+      <button class="row" id="set-hunts" role="switch"><svg class="icon"><use href="#i-hunt"/></svg><span>Show hunts<small>lines from each hunter to its quarry</small></span><i class="switch"></i></button>
+      <button class="row" id="set-full" role="switch"><svg class="icon"><use href="#i-fullscreen"/></svg><span>Fullscreen</span><i class="switch"></i></button>
+      <button class="row" id="set-hide"><svg class="icon"><use href="#i-hide"/></svg><span>Hide interface<small>tap the screen or press H to bring it back</small></span></button>
+      <dl class="keys">
+        <dt>Space</dt><dd>pause</dd><dt>+ −</dt><dd>speed</dd><dt>N</dt><dd>new world</dd>
+        <dt>G</dt><dd>field guide</dd><dt>S</dt><dd>settings</dd><dt>K</dt><dd>hunt lines</dd>
+        <dt>M</dt><dd>sound</dd><dt>F</dt><dd>fullscreen</dd><dt>H</dt><dd>hide interface</dd>
+      </dl>
+      <p class="version" id="version"></p>
+    </aside>
+
+    <nav id="controls" aria-label="Controls">
+      <button id="btn-pause" title="Pause (Space)" aria-label="Pause"><svg class="icon"><use href="#i-pause"/></svg></button>
+      <button id="btn-speed" title="Speed (+/−)" aria-label="Speed">1×</button>
+      <button id="btn-next" title="New world (N)" aria-label="New world"><svg class="icon"><use href="#i-next"/></svg></button>
+      <button id="btn-guide" title="Field guide (G)" aria-label="Field guide"><svg class="icon"><use href="#i-guide"/></svg></button>
+      <button id="btn-settings" title="Settings (S)" aria-label="Settings"><svg class="icon"><use href="#i-settings"/></svg></button>
+    </nav>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
