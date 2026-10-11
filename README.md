@@ -1,5 +1,14 @@
 # Random Ecosystems
 
+[![CI](https://github.com/ali-raheem/random-ecosystems/actions/workflows/ci.yml/badge.svg)](https://github.com/ali-raheem/random-ecosystems/actions/workflows/ci.yml) [![GitHub Pages](https://github.com/ali-raheem/random-ecosystems/actions/workflows/pages.yml/badge.svg)](https://github.com/ali-raheem/random-ecosystems/actions/workflows/pages.yml)
+
+**▶ Try it live: [shoryuken.me/eco](https://shoryuken.me/eco/)** · mirror on [GitHub Pages](https://ali-raheem.github.io/random-ecosystems/) · installable, works offline
+
+<p align="center">
+  <a href="https://shoryuken.me/eco/"><img src="docs/screenshots/desktop.webp" alt="Random Ecosystems on a desktop browser" width="74%"></a>
+  <a href="https://shoryuken.me/eco/"><img src="docs/screenshots/mobile.webp" alt="Random Ecosystems on a phone" width="22%"></a>
+</p>
+
 Endless generated worlds of grass, grazers and hunters. Each world has lakes, woodland and
 meadows, and runs through seasons, droughts and wildfires. The two species rise and fall in
 predator–prey cycles, and their genes drift in an evolutionary arms race. Made for leaving
