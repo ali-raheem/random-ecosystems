@@ -57,3 +57,7 @@ S settings · K hunt lines · M sound · F fullscreen · H hide the interface.
 npm run serve   # python3 -m http.server 8080
 npm test        # node --test, no dependencies
 ```
+
+## Licence
+
+[MIT](LICENSE) © 2026 Ali Raheem.
